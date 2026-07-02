@@ -23,6 +23,10 @@ BepInEx is a plugin / modding framework for Unity Mono, IL2CPP and .NET framewor
 
 A more comprehensive comparison list of features and compatibility is available at https://bepis.io/unity.html
 
+## Install folder
+
+Unlike upstream BepInEx, this build installs itself into a folder named `BepInExBGPP` next to your game executable (instead of `BepInEx`), and its plugins/patchers/config/core subfolders all live under that renamed root — e.g. `BepInExBGPP/plugins`, `BepInExBGPP/config`. This lets BGP+ builds sit side-by-side with a vanilla BepInEx install without conflicting.
+
 ## Used libraries
 
 - [NeighTools/UnityDoorstop](https://github.com/NeighTools/UnityDoorstop) - v4.5.0

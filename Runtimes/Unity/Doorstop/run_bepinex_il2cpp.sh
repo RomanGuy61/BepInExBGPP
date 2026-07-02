@@ -22,7 +22,7 @@ enabled="1"
 
 # Path to the assembly to load and execute
 # NOTE: The entrypoint must be of format `static void Doorstop.Entrypoint.Start()`
-target_assembly="BepInEx/core/BepInEx.Unity.IL2CPP.dll"
+target_assembly="BepInExBGPP/core/BepInEx.Unity.IL2CPP.dll"
 
 # Overrides the default boot.config file path
 boot_config_override=

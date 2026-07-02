@@ -235,7 +235,7 @@ public sealed class MakeDistTask : FrostingTask<BuildContext>
             ctx.CreateDirectory(targetDir);
             ctx.CleanDirectory(targetDir);
 
-            var bepInExDir = targetDir.Combine("BepInEx");
+            var bepInExDir = targetDir.Combine("BepInExBGPP");
             var bepInExCoreDir = bepInExDir.Combine("core");
             ctx.CreateDirectory(bepInExDir);
             ctx.CreateDirectory(bepInExCoreDir);
@@ -324,11 +324,11 @@ public sealed class PublishTask : FrostingTask<BuildContext>
 {
     public override void Run(BuildContext ctx)
     {
-        ctx.Log.Information("Packing BepInEx");
+        ctx.Log.Information("Packing BepInExBGPP");
 
         foreach (var dist in ctx.Distributions)
         {
-            var targetZipName = $"BepInEx-{dist.Target}-{ctx.BuildPackageVersion}.zip";
+            var targetZipName = $"BepInExBGPP-{dist.Target}-{ctx.BuildPackageVersion}.zip";
             ctx.Log.Information($"Packing {targetZipName}");
             ctx.Zip(ctx.DistributionDirectory.Combine(dist.Target),
                     ctx.DistributionDirectory
@@ -355,9 +355,9 @@ public sealed class PublishTask : FrostingTask<BuildContext>
                                           ["short_hash"] = ctx.GitShortenSha(ctx.RootDirectory, ctx.CurrentCommit),
                                           ["artifacts"] = ctx.Distributions.Select(d => new Dictionary<string, string>
                                           {
-                                              ["file"] = $"BepInEx-{d.Target}-{ctx.BuildPackageVersion}.zip",
+                                              ["file"] = $"BepInExBGPP-{d.Target}-{ctx.BuildPackageVersion}.zip",
                                               ["description"] =
-                                                  $"BepInEx {d.Engine} ({d.Runtime}{(d.FrameworkTarget == null ? "" : " " + d.FrameworkTarget)}) for {d.ClearOsName} ({d.Arch}) games"
+                                                  $"BepInExBGPP {d.Engine} ({d.Runtime}{(d.FrameworkTarget == null ? "" : " " + d.FrameworkTarget)}) for {d.ClearOsName} ({d.Arch}) games"
                                           }).ToArray()
                                       });
     }

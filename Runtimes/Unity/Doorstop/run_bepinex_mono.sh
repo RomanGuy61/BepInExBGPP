@@ -22,7 +22,7 @@ enabled="1"
 
 # Path to the assembly to load and execute
 # NOTE: The entrypoint must be of format `static void Doorstop.Entrypoint.Start()`
-target_assembly="BepInEx/core/BepInEx.Unity.Mono.Preloader.dll"
+target_assembly="BepInExBGPP/core/BepInEx.Unity.Mono.Preloader.dll"
 
 # Overrides the default boot.config file path
 boot_config_override=
@@ -39,7 +39,7 @@ ignore_disable_switch="0"
 # This option causes Mono to seek mscorlib and core libraries from a different folder before Managed
 # Original Managed folder is added as a secondary folder in the search path
 # To specify multiple paths, separate them with colons (:)
-dll_search_path_override="BepInEx/core"
+dll_search_path_override="BepInExBGPP/core"
 
 # If 1, Mono debugger server will be enabled
 debug_enable="0"

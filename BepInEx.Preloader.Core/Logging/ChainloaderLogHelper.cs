@@ -35,7 +35,7 @@ public static class ChainloaderLogHelper
 
     public static void PrintLogInfo(ManualLogSource log)
     {
-        var consoleTitle = $"BepInEx {Paths.DisplayBepInExVersion} - {Paths.ProcessName}";
+        var consoleTitle = $"BepInExBGPP {Paths.DisplayBepInExVersion} - {Paths.ProcessName}";
         log.Log(LogLevel.Message, $"{consoleTitle} ({File.GetLastWriteTime(Paths.ExecutablePath)})");
 
         if (ConsoleManager.ConsoleActive)
@@ -43,6 +43,9 @@ public static class ChainloaderLogHelper
 
         if (!string.IsNullOrEmpty(Paths.BepInExVersion.Build))
             log.Log(LogLevel.Message, $"Built from commit {Paths.BepInExVersion.Build}");
+
+        log.Log(LogLevel.Message, "BepInExBGPP - Bepis Injector Extensible Big Goofy Project Plus, loading from " +
+                                   Paths.BepInExRootPath);
 
         Logger.Log(LogLevel.Info, $"System platform: {GetPlatformString()}");
         Logger.Log(LogLevel.Info,

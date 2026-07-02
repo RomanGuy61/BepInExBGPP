@@ -43,7 +43,7 @@ internal class StartupHook
             string bepinexCoreDirectory = null;
 
             if (gameDirectory != null)
-                bepinexCoreDirectory = Path.Combine(gameDirectory, "BepInEx", "core");
+                bepinexCoreDirectory = Path.Combine(gameDirectory, "BepInExBGPP", "core");
 
             if (assemblyFilename == null || gameDirectory == null || !Directory.Exists(bepinexCoreDirectory))
             {

@@ -130,7 +130,7 @@ public static class Paths
             throw new DirectoryNotFoundException("Failed to extract valid GameDataPath from executablePath: " + executablePath);
 
         ManagedPath = managedPath ?? Path.Combine(GameDataPath, "Managed");
-        BepInExRootPath = bepinRootPath ?? Path.Combine(GameRootPath, "BepInEx");
+        BepInExRootPath = bepinRootPath ?? Path.Combine(GameRootPath, "BepInExBGPP");
         ConfigPath = Path.Combine(BepInExRootPath, "config");
         BepInExConfigPath = Path.Combine(ConfigPath, "BepInEx.cfg");
         PluginPath = Path.Combine(BepInExRootPath, "plugins");

@@ -46,11 +46,11 @@ internal static class Entrypoint
             {
                 if (PlatformHelper.Is(Platform.Windows))
                 {
-                    MessageBox.Show("Failed to start BepInEx", "BepInEx");
+                    MessageBox.Show("Failed to start BepInExBGPP", "BepInExBGPP");
                 }
                 else if (NotifySend.IsSupported)
                 {
-                    NotifySend.Send("Failed to start BepInEx", "Check logs for details");
+                    NotifySend.Send("Failed to start BepInExBGPP", "Check logs for details");
                 }
                 else if (string.IsNullOrEmpty(Environment.GetEnvironmentVariable("BEPINEX_FAIL_FAST")))
                 {

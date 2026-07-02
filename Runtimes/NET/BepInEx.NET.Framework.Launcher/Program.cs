@@ -40,7 +40,7 @@ internal class Program
             ResolveDirectories.Add(Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName));
 #else
             filename = Process.GetCurrentProcess().MainModule.FileName;
-            ResolveDirectories.Add(Path.Combine(Path.GetDirectoryName(filename), "BepInEx", "core"));
+            ResolveDirectories.Add(Path.Combine(Path.GetDirectoryName(filename), "BepInExBGPP", "core"));
 #endif
 
             AppDomain.CurrentDomain.AssemblyResolve += SharedEntrypoint.RemoteResolve(ResolveDirectories);
