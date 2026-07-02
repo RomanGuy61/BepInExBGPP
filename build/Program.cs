@@ -206,10 +206,10 @@ public sealed class DownloadDependenciesTask : FrostingTask<BuildContext>
     }
 }
 
-[TaskName("MakeDist")]
+[TaskName("Dist")]
 [IsDependentOn(typeof(CompileTask))]
 [IsDependentOn(typeof(DownloadDependenciesTask))]
-public sealed class MakeDistTask : FrostingTask<BuildContext>
+public sealed class DistTask : FrostingTask<BuildContext>
 {
     public override void Run(BuildContext ctx)
     {
@@ -235,6 +235,12 @@ public sealed class MakeDistTask : FrostingTask<BuildContext>
             ctx.CreateDirectory(targetDir);
             ctx.CleanDirectory(targetDir);
 
+            // NOTE: core loader assemblies MUST live under BepInExBGPP/core, not BepInExBGPP/plugins.
+            // Paths.cs (BepInExAssemblyDirectory) and the doorstop configs/run scripts hardcode
+            // "BepInExBGPP/core/<entrypoint>.dll" as the boot target. Putting the loader DLLs in
+            // plugins/ instead would break doorstop's ability to find and start the loader entirely.
+            // plugins/ and patchers/ are left empty here - they're where END USERS drop their own
+            // mod DLLs after installing this distribution, not where our own build output goes.
             var bepInExDir = targetDir.Combine("BepInExBGPP");
             var bepInExCoreDir = bepInExDir.Combine("core");
             ctx.CreateDirectory(bepInExDir);
@@ -256,6 +262,9 @@ public sealed class MakeDistTask : FrostingTask<BuildContext>
                 var doorstopPath = dist.Os == "macos"
                     ? ctx.CacheDirectory.Combine("doorstop").Combine("doorstop_macos").Combine("universal")
                     : ctx.CacheDirectory.Combine("doorstop").Combine($"doorstop_{dist.Os}").Combine(dist.Arch);
+
+                // Copies doorstop's native bootstrap libraries into the dist root, e.g. winhttp.dll
+                // (proxy-DLL hijack) on win-x86/win-x64, libdoorstop.so on linux, libdoorstop.dylib on macos.
                 foreach (var filePath in ctx.GetFiles(doorstopPath.Combine($"*.{dist.DllExtension}").FullPath))
                     ctx.CopyFileToDirectory(filePath, targetDir);
                 ctx.CopyFileToDirectory(doorstopPath.CombineWithFilePath(".doorstop_version"), targetDir);
@@ -318,7 +327,7 @@ public sealed class PushNuGetTask : FrostingTask<BuildContext>
 }
 
 [TaskName("Publish")]
-[IsDependentOn(typeof(MakeDistTask))]
+[IsDependentOn(typeof(DistTask))]
 [IsDependentOn(typeof(PushNuGetTask))]
 public sealed class PublishTask : FrostingTask<BuildContext>
 {
@@ -330,6 +339,7 @@ public sealed class PublishTask : FrostingTask<BuildContext>
         {
             var targetZipName = $"BepInExBGPP-{dist.Target}-{ctx.BuildPackageVersion}.zip";
             ctx.Log.Information($"Packing {targetZipName}");
+            // ctx.DistributionDirectory == bin/dist, so the zip lands directly in bin/dist/
             ctx.Zip(ctx.DistributionDirectory.Combine(dist.Target),
                     ctx.DistributionDirectory
                        .CombineWithFilePath(targetZipName));
@@ -365,4 +375,14 @@ public sealed class PublishTask : FrostingTask<BuildContext>
 
 [TaskName("Default")]
 [IsDependentOn(typeof(CompileTask))]
-public class DefaultTask : FrostingTask { }
+public class DefaultTask : FrostingTask<BuildContext>
+{
+    public override void Run(BuildContext ctx)
+    {
+        ctx.Log.Information("");
+        ctx.Log.Information("Compile finished. This default run only builds the assemblies.");
+        ctx.Log.Information("To produce packaged distributions, run one of:");
+        ctx.Log.Information("  ./build.sh --target Dist       # builds BepInExBGPP/<version>/ folders in bin/dist");
+        ctx.Log.Information("  ./build.sh --target Publish    # runs Dist, then zips each target into bin/dist/*.zip");
+    }
+}
